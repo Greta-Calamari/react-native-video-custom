@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
 import android.net.Uri;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -101,6 +102,7 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     private final VideoEventEmitter eventEmitter;
+    private boolean earPiece = false;
     private final ReactExoplayerConfig config;
     private final DefaultBandwidthMeter bandwidthMeter;
     private PlayerControlView playerControlView;
@@ -426,6 +428,15 @@ class ReactExoplayerView extends FrameLayout implements
                     PlaybackParameters params = new PlaybackParameters(rate, 1f);
                     player.setPlaybackParameters(params);
                 }
+
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(earPiece? C.USAGE_VOICE_COMMUNICATION : C.USAGE_MEDIA)
+                    .setContentType(earPiece? C.CONTENT_TYPE_SPEECH:C.CONTENT_TYPE_MUSIC)
+                    .build();
+ 
+                player.setAudioAttributes(audioAttributes);
+
+
                 if (playerNeedsSource && srcUri != null) {
                     exoPlayerView.invalidateAspectRatio();
 
@@ -1283,6 +1294,11 @@ class ReactExoplayerView extends FrameLayout implements
         releasePlayer();
         initializePlayer();
     }
+
+    public void setearPiece(boolean earPiece){
+         this.earPiece = earPiece;
+         this.initializePlayer();
+     }
 
     public void setPlayInBackground(boolean playInBackground) {
         this.playInBackground = playInBackground;

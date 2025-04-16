@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerView> {
 
     private static final String REACT_CLASS = "RCTVideo";
-
+    private static final String PROP_EAR_PIECE = "earPiece";
     private static final String PROP_SRC = "src";
     private static final String PROP_SRC_URI = "uri";
     private static final String PROP_SRC_TYPE = "type";
@@ -174,6 +174,11 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
                 }
             }
         }
+    }
+
+    @ReactProp(name = PROP_EAR_PIECE, defaultBoolean = false)
+     public void setearPiece(final ReactExoplayerView videoView, final boolean earPiece) {
+         videoView.setearPiece(earPiece);
     }
 
     @ReactProp(name = PROP_RESIZE_MODE)

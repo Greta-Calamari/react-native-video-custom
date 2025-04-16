@@ -435,6 +435,12 @@ class ReactExoplayerView extends FrameLayout implements
                     PlaybackParameters params = new PlaybackParameters(rate, 1f);
                     player.setPlaybackParameters(params);
                 }
+                
+                if (earPiece) {
+                    audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+                } else {
+                    audioManager.setMode(AudioManager.MODE_NORMAL);
+                }
 
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
                         .setUsage(earPiece? C.USAGE_VOICE_COMMUNICATION : C.USAGE_MEDIA)
@@ -560,9 +566,8 @@ class ReactExoplayerView extends FrameLayout implements
             return true;
         }
         int result = audioManager.requestAudioFocus(this,
-                AudioManager.STREAM_MUSIC,
-                //AudioManager.STREAM_VOICE_CALL,
-                AudioManager.AUDIOFOCUS_GAIN);
+        earPiece ? AudioManager.STREAM_VOICE_CALL : AudioManager.STREAM_MUSIC,
+        AudioManager.AUDIOFOCUS_GAIN);
         return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
     }
 

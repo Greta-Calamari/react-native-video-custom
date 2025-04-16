@@ -1250,6 +1250,7 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     public void setearPiece(boolean earPiece){
+        Log.d("ReactNativeVideo", "EARPIECE received: -----------------------" + earPiece);
         this.earPiece = earPiece;
         this.initializePlayer();
     }

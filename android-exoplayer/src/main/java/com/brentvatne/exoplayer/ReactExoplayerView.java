@@ -406,6 +406,11 @@ class ReactExoplayerView extends FrameLayout implements
             @Override
             public void run() {
                 if (player == null) {
+                     if (earPiece) {
+                        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+                    } else {
+                        audioManager.setMode(AudioManager.MODE_NORMAL);
+                    }
                     TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory();
                     trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
                     trackSelector.setParameters(trackSelector.buildUponParameters()
@@ -422,6 +427,11 @@ class ReactExoplayerView extends FrameLayout implements
                             new DefaultRenderersFactory(getContext())
                                     .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF);
                     // TODO: Add drmSessionManager to 5th param from: https://github.com/react-native-community/react-native-video/pull/1445
+                    if (earPiece) {
+                        audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
+                    } else {
+                        audioManager.setMode(AudioManager.MODE_NORMAL);
+                    }
                     player = ExoPlayerFactory.newSimpleInstance(getContext(), renderersFactory,
                             trackSelector, defaultLoadControl, null, bandwidthMeter);
                     player.addListener(self);
@@ -443,11 +453,11 @@ class ReactExoplayerView extends FrameLayout implements
                 }
 
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                        .setUsage(earPiece? C.USAGE_VOICE_COMMUNICATION : C.USAGE_MEDIA)
-                        .setContentType(earPiece? C.CONTENT_TYPE_SPEECH:C.CONTENT_TYPE_MUSIC)
-                        .build();
-
+                .setUsage(earPiece ? C.USAGE_VOICE_COMMUNICATION : C.USAGE_MEDIA)
+                .setContentType(earPiece ? C.CONTENT_TYPE_SPEECH : C.CONTENT_TYPE_MUSIC)
+                .build();
                 player.setAudioAttributes(audioAttributes);
+
                 //deprecated player.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
 
                 if (playerNeedsSource && srcUri != null) {
